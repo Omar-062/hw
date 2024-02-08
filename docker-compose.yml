@@ -1,0 +1,31 @@
+version: '3'
+ 
+services:
+  mini_crm_front:
+    build: ./mini_crm_front
+    ports:
+      - "3000:3000"
+     
+  mini_crm_api:
+    build: ./mini_crm_api/mini_crm
+    ports:
+      - "5000:5000"
+    depends_on:
+      - mssql
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__MinCrmDb=Server=mssql,1433;Database=MinCrmDb;User Id=SA;Password=QwertY123!;
+ 
+  mssql:
+    image: mcr.microsoft.com/mssql/server
+    environment:
+      SA_PASSWORD: "QwertY123!"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+   
+  adminer:
+    image: adminer
+    ports:
+      - "8080:8080"
+ 
